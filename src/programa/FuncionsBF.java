@@ -35,6 +35,13 @@ public class FuncionsBF {
 
 	// Funció fesVotacions
 
+	/**
+	 * Funció que rep com a paràmetre un tauler, en una quantitat de files iguals a
+	 * cantants i columnes igual a jutges. Aquesta funció crida a altra de nom
+	 * votaJutge, tantes vegades com jutges hi ha.
+	 * 
+	 * @param tauler, matriu de files per columnes = cantants, jutges.
+	 */
 	static void fesVotacions(int[][] tauler) {
 		for (int jutge = 1; jutge < tauler.length; jutge++) {
 
@@ -46,33 +53,50 @@ public class FuncionsBF {
 	// Funció votaJutge
 
 	static void votaJutge(int[][] tauler, int jutge) {
-		System.out.println("Vota el jutge número: " + jutge);
+		System.out.println();
+		Pantalla.titolet("VOTA EL JUTGE NÚMERO: " + jutge);
+		System.out.println();
 
-		for (int jut = 1; jut < tauler.length; jut++) {
-			int preferencia = Teclat.lligInt("Ordre de preferència per als punts: ", 1, 8);
-			votaJutgeACantant(tauler, jutge, preferencia);
+		int numVotacionsJutge = 0;
+		while (numVotacionsJutge < 8) {
+
+			int prefPunts = Teclat.lligInt("Ordre de preferència per als punts: ", 1, 8);
+			numVotacionsJutge++;
+			votaJutgeACantant(tauler, jutge, prefPunts);
+
 		}
-
+		numVotacionsJutge = 0;
 	}
 
 	// Funció votaJutgeACantant
 
-	static void votaJutgeACantant(int[][] tauler, int jutge, int pref) {
-
-		int nCantant = Teclat.lligInt("Número de cantant a votar: ", 1, tauler[0].length - 1);
-
-		int punts = puntsSegonsOrdre(pref);
-		System.out.println(punts + " Punts per al cantant " + nCantant);
-		tauler[jutge][nCantant] = punts;
+	static void votaJutgeACantant(int[][] tauler, int jutge, int prefPunts) {
 		
+		ArrayList<Integer> cançoVotada = new ArrayList<>();
+		
+		Integer nCantant = Teclat.lligInt("Número de cantant a votar: ", 1, tauler[0].length - 1); 
+		
+		
+		if (cançoVotada.contains(nCantant)) {
+			System.out.println();
+			System.out.println("¡¡¡AQUEST JUTGE JA HA VOTAT A AQUESTA CANÇÓ!!!");
+			
+		} else {
+				cançoVotada.add(nCantant);
+		}
+		
+
+		int punts = puntsSegonsOrdre(prefPunts);
+		System.out.println("-- " + punts + " Punts per al cantant " + nCantant);
+		tauler[jutge][nCantant] = punts;
 
 	}
 
 	// Funció puntsSegonsOrdre
 
-	static int puntsSegonsOrdre(int pref) {
+	static int puntsSegonsOrdre(int prefPunts) {
 		int vots = 0;
-		switch (pref) {
+		switch (prefPunts) {
 
 		case 1:
 			vots = 2;

@@ -12,6 +12,8 @@ public class MainBF {
 		tauler = FuncionsBF.creaTaulerDeVots();		
 		
 		FuncionsBF.fesVotacions(tauler);
+		
+		FuncionsBF.mostraPuntuacions(tauler);
 	}
 
 }

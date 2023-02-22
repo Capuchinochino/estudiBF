@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import Teclat.*;
 
-public class FuncionsBF {
+public class FuncionsBF1 {
 
 	// Funció creaTaulerDeVots;
 
@@ -21,11 +21,11 @@ public class FuncionsBF {
 
 		int qJutges = Teclat.lligInt("Quants jutges tindrà la competició: ", 1);
 
-		int[][] tauler = new int[qJutges + 1][qCantants + 1];
+		int[][] tauler = new int[qCantants + 1][qJutges + 1];
 
-		for (int jutge = 1; jutge <= qJutges; jutge++) {
-			for (int cantant = 1; cantant <= qCantants; cantant++) {
-				tauler[jutge][cantant] = 0;
+		for (int cantant = 1; cantant <= qJutges; cantant++) {
+			for (int jutge = 1; jutge <= cantant; jutge++) {
+				tauler[cantant][jutge] = 0;
 
 			}
 		}
@@ -43,7 +43,7 @@ public class FuncionsBF {
 	 * @param tauler, matriu de files per columnes = cantants, jutges.
 	 */
 	static void fesVotacions(int[][] tauler) {
-		for (int jutge = 1; jutge < tauler.length; jutge++) {
+		for (int jutge = 1; jutge < tauler.length - 1; jutge++) {
 
 			votaJutge(tauler, jutge);
 		}
@@ -57,34 +57,25 @@ public class FuncionsBF {
 		Pantalla.titolet("VOTA EL JUTGE NÚMERO: " + jutge);
 		System.out.println();
 
-		int prefPunts = 1;
-		for (int i = 1; i <= 8; i++) {
-			votaJutgeACantant(tauler, jutge, prefPunts);
-			prefPunts++;
-		}
+//		int numVotacionsJutge = 0;
+		int prefPunts = 0;
+//		while (numVotacionsJutge < 4) {
+//			prefPunts++;
+//			numVotacionsJutge++;
+		votaJutgeACantant(tauler, jutge, prefPunts);
 
 	}
+//		numVotacionsJutge = 0;
 
 	// Funció votaJutgeACantant
 
 	static void votaJutgeACantant(int[][] tauler, int jutge, int prefPunts) {
-
-		boolean cantantVotat = false;
 		int punts = puntsSegonsOrdre(prefPunts);
-
-		while (cantantVotat == false) {
-
-			int nCantant = Teclat.lligInt("-- " + punts + " punts per al cantant ", 1, tauler[0].length - 1);
-
-			if (tauler[jutge][nCantant] == punts) {
-				System.out.println("Eixe jutge ja ha votat a eixe cantant, des-me altre.");
-
-			} else {
-				tauler[jutge][nCantant] = punts;
-				cantantVotat = true;
-			}
-
+		int nCantant = Teclat.lligInt("-- " + punts + " punts per al cantant ", 1, tauler.length - 1);
+		if (tauler[nCantant][jutge] == punts) {
+			System.out.println("Este jutge ja ha votat eixe cantant. Dis-me un altre.");
 		}
+		tauler[nCantant][jutge] = punts;
 
 	}
 
@@ -101,33 +92,20 @@ public class FuncionsBF {
 	// Funció mostraPuntuacions
 
 	static void mostraPuntuacions(int[][] tauler) {
-		System.out.print("\t");
-		for (int jutge = 1; jutge < tauler.length; jutge++) {
-			System.out.print(jutge + "\t");
+		System.out.println("\t");
+		for (int jutge = 1; jutge < tauler[0].length; jutge++) {
+			System.out.print(" " + jutge + "\t");
 		}
 		System.out.println(" ");
 
-		for (int cantant = 1; cantant < tauler[0].length; cantant++) {
+		for (int cantant = 1; cantant < tauler.length; cantant++) {
 			System.out.print(cantant + "\t");
-			for (int jutge = 1; jutge < tauler.length; jutge++) {
-				System.out.print(tauler[jutge][cantant] + "\t");
+			for (int jutge = 1; jutge < tauler[0].length; jutge++) {
+				System.out.print(" " + tauler[cantant][jutge] + "\t");
 
 			}
-			System.out.println();
+			System.out.println(" ");
 		}
 
-//		System.out.print("\t");
-//		for (int jutge = 1; jutge < tauler.length; jutge++) {
-//			System.out.print("(" + jutge + ")\t");
-//		}
-//		System.out.println();
-//
-//		for (int cantant = 1; cantant < tauler[0].length; cantant++) {
-//			System.out.print("(" + cantant + ")\t");
-//			for (int jutge = 1; jutge < tauler.length; jutge++) {
-//				System.out.print(tauler[jutge][cantant] + "\t");
-//			}
-//			System.out.println();
-//		}
 	}
 }
